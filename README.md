@@ -2,13 +2,6 @@
 
 ## By Preston San
 
-A *bulleted* list:
-- item 1
-- item 2
-- item 3
-
-An example of text with **bold** and *italic* fonts.  
-
 ## User Stories
 - As a user, I want to be able to spawn a plant
 - As a user, I want to be able to spawn a zombie and have it move
@@ -17,3 +10,8 @@ An example of text with **bold** and *italic* fonts.
 - As a user, I want to be able to have plants die when hit enough by zombies
 - As a user, I want to be able to create a level of zombies
 - As a user, I want to be able to beat said level to win
+
+*To Do List*
+- make gui (later on)
+- be able to read in a level file to know when to spawn zombies (by round)
+- change constructors

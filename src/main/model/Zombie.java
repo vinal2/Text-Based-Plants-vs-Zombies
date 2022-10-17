@@ -10,25 +10,29 @@ public class Zombie {
         damage = dmg;
         index = place;
     }
+    // EFFECTS: returns health
     public int getHealth() {
         return health;
     }
 
+    // EFFECTS: returns damage
     public int getDamage() {
         return damage;
     }
 
+    // EFFECTS: returns index
     public int getIndex() {
         return index;
     }
 
-    public boolean isAlive(int damage) {
-        health -= damage;
-        if (health <= 0) {
-            System.out.println("zombie dead");
-            return false;
-        }
-        return true;
+    // REQUIRES:
+    // MODIFIES: this
+    // EFFECTS: returns if the zombie is dead or alive
+    public boolean isAlive() {
+        return (health <= 0);
     }
 
+    public void takeDamage(int damage) {
+        health -= damage;
+    }
 }

@@ -44,6 +44,8 @@ public class GameApp {
         System.out.println(Arrays.toString(playField));
     }
 
+    // REQUIRES: instantiated game
+    // EFFECTS: runs an update of the game, moving zombies, checking game state etc.
     public void gameUpdate(Game game) {
         game.damageZombie(game.calculateDamage());
         game.moveZombies();

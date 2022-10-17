@@ -17,22 +17,30 @@ public class Game {
         placeZombie(9);
     }
 
+    // REQUIRES: index >= 0, index < playField.size()
+    // MODIFIES: this
+    // EFFECTS: places zombie in play field and in zombieList
     public void placeZombie(int index) {
         Zombie zombie = new Zombie(500, 20, index);
         playField[index] = "z";
         zombieList.add(zombie);
     }
 
+    // REQUIRES: index >= 0, index < playField.size()
+    // MODIFIES: this
+    // EFFECTS: places plant on play field and in plantList
     public void placePlant(int index) {
         Plant plant = new Plant(100, 10, index);
         playField[index] = "p";
         plantList.add(plant);
     }
 
+    // EFFECTS: returns play field array
     public String[] returnPlayField() {
         return playField;
     }
 
+    // EFFECTS: moves the zombies forward, comments in the function explain in further depth
     public void moveZombies() {
         if (detectZombie(closestZombie(), furthestFlower())) {
             int index = 0;
@@ -57,6 +65,9 @@ public class Game {
         }
     }
 
+    // REQUIRES: instantiated zombie, nextIndex = index + 1, nextIndex >= 0
+    // MODIFIES: this
+    // EFFECTS: copies the zombie at index and sets it at nextIndex, and then removing zombie at index
     public void moveZombie(Zombie z, int nextIndex, int index) {
         playField[nextIndex] = "z";
         playField[z.getIndex()] = "_";
@@ -64,8 +75,8 @@ public class Game {
         zombieList.set(index, cloneZom);
     }
 
-    //EFFECTS:
-    public int calculateDamage() { // calculates amount of damage done to the first zombie
+    //EFFECTS: calculates amount of damage done to the first zombie
+    public int calculateDamage() {
         int damage = 0;
         for (Plant p : plantList) {
             damage += p.getDamage();
@@ -73,7 +84,7 @@ public class Game {
         return damage;
     }
 
-    //EFFECTS:
+    //EFFECTS: finds the closest zombie by index in zombieList
     public int closestZombie() {
         int smallestIndex = zombieList.get(0).getIndex();
         for (int i = 1; i < zombieList.size(); i++) {
@@ -84,6 +95,9 @@ public class Game {
         return smallestIndex;
     }
 
+    // REQUIRES: damage > 0
+    // MODIFIES: this
+    // EFFECTS: damages the zombie at the closest index and if it has hp < 0, it will be removed from the play field
     public void damageZombie(int damage) {
         int index = 0;
         int closestZombie = closestZombie();
@@ -93,15 +107,15 @@ public class Game {
                     index = i;
                 }
             }
-            if (!zombieList.get(index).isAlive(damage)) {
+            zombieList.get(index).takeDamage(damage);
+            if (zombieList.get(index).isAlive()) {
                 zombieList.remove(index);
                 playField[closestZombie] = "_";
-                //System.out.println("Zombie in index " + (closestZombie + 1) + " died from " + damage + " damage.");
             }
         }
     }
 
-    //EFFECTS:
+    //EFFECTS: finds the furthest plant by index
     public int furthestFlower() {
         int largestIndex = 0;
         for (int i = 0; i < plantList.size(); i++) {
@@ -112,7 +126,8 @@ public class Game {
         return largestIndex;
     }
 
-
+    // REQUIRES: closestZombie, furthestFlower > 0
+    // EFFECTS: returns if the closest zombie is in front of the furthest flower
     public boolean detectZombie(int closestZombie, int furthestFlower) {
         if (closestZombie == 1 && furthestFlower == 0 && plantList.size() == 0) {
             return false;
@@ -120,8 +135,8 @@ public class Game {
         return (closestZombie == furthestFlower + 1);
     }
 
-    //MODIFIES: this
-    //EFFECTS: if a plant's hp drops below 0, remove it from the play field and from the plantList
+    // MODIFIES: this
+    // EFFECTS: if a plant's hp drops below 0, remove it from the play field and from the plantList
     public void damagePlant() {
         int plantIndex = 0;
         int zombieIndex = 0;
@@ -136,27 +151,39 @@ public class Game {
                     zombieIndex = i;
                 }
             }
-            if (!plantList.get(plantIndex).isAlive(zombieList.get(zombieIndex).getDamage())) {
+            if (plantList.get(plantIndex).isAlive(zombieList.get(zombieIndex).getDamage())) {
                 playField[plantList.get(plantIndex).getIndex()] = "_";
                 plantList.remove(plantIndex);
             }
         }
     }
 
-    //EFFECTS:
+    // EFFECTS: if the closest zombie is at the beginning of the play field list, the game is over
     public void gameOver() {
         if (closestZombie() == 0) {
-            gameState = false;
+            stopGame();
         }
     }
 
+    // EFFECTS: returns game state
     public boolean getGameState() {
         return gameState;
     }
 
-    //EFFECTS:
+    // MODIFIES: this
+    // EFFECTS: stops game
     public void stopGame() {
         gameState = false;
+    }
+
+    // EFFECTS: returns zombie list
+    public ArrayList<Zombie> getZombieList() {
+        return zombieList;
+    }
+
+    // EFFECTS: returns plant list
+    public ArrayList<Plant> getPlantList() {
+        return plantList;
     }
 
 }

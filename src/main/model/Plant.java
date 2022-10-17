@@ -1,9 +1,6 @@
 package model;
 
 public class Plant {
-    public static double Attack_Speed = 0.5;
-    public int coordinateX;
-    public int coordinateY;
     private int health;
     private int damage;
     private int index;
@@ -14,24 +11,27 @@ public class Plant {
         index = place;
     }
 
+    // EFFECTS: returns health
     public int getHealth(){
         return health;
     }
 
+    // EFFECTS: returns
     public int getDamage(){
         return damage;
     }
 
+    // EFFECTS: returns index of plant
     public int getIndex(){
         return index;
     }
 
+    // REQUIRES: 0 < int damage
+    // MODIFIES: this
+    // EFFECTS: returns if the plant is dead or alive after damaging it
     public boolean isAlive(int damage) {
         health -= damage;
-        if (health <= 0) {
-            return false;
-        }
-        return true;
+        return (health <= 0);
     }
 
 }
