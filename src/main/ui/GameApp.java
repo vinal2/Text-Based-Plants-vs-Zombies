@@ -71,7 +71,7 @@ public class GameApp {
             }
             return true;
         } catch (NumberFormatException exception) {
-            if (!input.equals("e") && !input.isBlank()) {
+            if (!input.equals("e") && !input.equals("")) {
                 System.out.println("Please input an integer from 0 to " + (length - 1));
             }
         }
