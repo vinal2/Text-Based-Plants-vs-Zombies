@@ -6,18 +6,14 @@ import java.util.Scanner;
 import model.Game;
 
 public class GameApp {
-    private Scanner input;
-    private char[] playField;
-    //make zombie W
-    //make plant  W
-    //have zombie get hit by plant
-    //have zombie die
-    //have plant get hit by zombie
 
+    //EFFECTS: runs game
     public GameApp() {
         runGame();
     }
 
+    // EFFECTS:  if the user enters p, instantiate the game, holds the game loop
+    // cont. displays the play field, gets user input from game menu, runs all the game updates
     public void runGame() {
         mainMenuDisplay();
         String answer = getUserInput();
@@ -26,7 +22,7 @@ public class GameApp {
             Game game = new Game();
             while (game.getGameState()) {
                 printPlayField(game.returnPlayField());
-                gameMenuDisplay(game.returnPlayField(), game);
+                gameMenuDisplay();
                 String input = getUserInput();
                 if (processNumericalInput(input, game.returnPlayField())) {
                     processGameInput(Integer.parseInt(input), game);
@@ -34,21 +30,34 @@ public class GameApp {
                     game.stopGame();
                     System.out.println("Quitting game");
                 } // does the processing of commands and stuff
-                game.damagePlant();
-                game.damageZombie(game.calculateDamage());
-                game.moveZombies();
-                game.gameOver();
+                gameUpdate(game);
             }
 
         } else if (answer.equals("e")) {
-            // quit game
+            System.out.println("Quitting game");
         }
     }
 
+    // REQUIRES: non-empty string array
+    // EFFECTS: prints play field array
     public void printPlayField(String[] playField) {
         System.out.println(Arrays.toString(playField));
     }
 
+    public void gameUpdate(Game game) {
+        game.damageZombie(game.calculateDamage());
+        game.moveZombies();
+        game.gameOver();
+        if (game.getGameState()) {
+            game.damagePlant();
+        } else {
+            printPlayField(game.returnPlayField());
+            System.out.println("Game over");
+        }
+    }
+
+    // REQUIRES: non-empty input string, non-empty string array
+    // EFFECTS: processes user input, finds if it is an integer. will exit game if e is entered (like menu)
     public boolean processNumericalInput(String input, String[] playField) {
         int numericalValue;
         int length = playField.length;
@@ -60,13 +69,14 @@ public class GameApp {
             }
             return true;
         } catch (NumberFormatException exception) {
-            if (!input.equals("e")) {
+            if (!input.equals("e") && !input.isBlank()) {
                 System.out.println("Please input an integer from 0 to " + (length - 1));
             }
         }
         return false;
     }
 
+    //EFFECTS: prints the main menu
     public void mainMenuDisplay() {
         System.out.println("Pvz idk");
         System.out.println("=============================");
@@ -75,16 +85,20 @@ public class GameApp {
         System.out.println("=============================");
     }
 
-    public void gameMenuDisplay(String[] playField, Game game) {
+    // EFFECTS: prints the game menu
+    public void gameMenuDisplay() {
         System.out.println("=============================");
         System.out.println("what index do you want to plant a flower: ");
         System.out.println("=============================");
     }
 
+    //REQUIRES: input >= 0, game instance instantiated
+    //EFFECTS: plants a flower
     public void processGameInput(int input, Game game) {
         game.placePlant(input);
     }
 
+    //EFFECTS: gets the user input
     public String getUserInput() {
         Scanner input = new Scanner(System.in);
         System.out.println("Enter Input: ");
