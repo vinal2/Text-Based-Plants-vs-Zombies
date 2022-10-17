@@ -10,6 +10,7 @@ public class Zombie {
         damage = dmg;
         index = place;
     }
+
     // EFFECTS: returns health
     public int getHealth() {
         return health;
