@@ -12,17 +12,17 @@ public class Plant {
     }
 
     // EFFECTS: returns health
-    public int getHealth(){
+    public int getHealth() {
         return health;
     }
 
     // EFFECTS: returns
-    public int getDamage(){
+    public int getDamage() {
         return damage;
     }
 
     // EFFECTS: returns index of plant
-    public int getIndex(){
+    public int getIndex() {
         return index;
     }
 
