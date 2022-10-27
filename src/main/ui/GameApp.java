@@ -42,8 +42,8 @@ public class GameApp {
         }
     }
 
-    // MODIFIES:
-    // EFFECTS:
+    // MODIFIES: this
+    // EFFECTS: runs game instance, getting user input, displaying everything etc.
     public void runGame() {
         game.summonBaseLevel();
         while (game.getGameState()) {
