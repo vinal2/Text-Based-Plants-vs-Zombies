@@ -1,10 +1,16 @@
 package model;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameTest {
     Game game = new Game();
+
+    @BeforeEach
+    void instantiateGame() {
+        game.summonBaseLevel();
+    }
 
     @Test
     void testConstructors() { //test that zombie/plant list are not empty
@@ -50,7 +56,6 @@ class GameTest {
         //test that only the first zombie takes damage
         assertEquals(game.getZombieList().get(0).getHealth(), 490);
         assertEquals(game.getZombieList().get(1).getHealth(), 500);
-
         //test when one zombie is lower than 0 health that it gets removed
         for (int i = 0; i < 49; i++) {
             game.damageZombie(game.calculateDamage());

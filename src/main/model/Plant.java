@@ -1,5 +1,8 @@
 package model;
 
+import org.json.JSONObject;
+
+// this class is for plants, which are static in the play field and do damage over time to zombies. Placed by the player
 public class Plant {
     private int health;
     private int damage;
@@ -32,6 +35,15 @@ public class Plant {
     public boolean isAlive(int damage) {
         health -= damage;
         return (health <= 0);
+    }
+
+    // EFFECTS: turns plant into json object
+    public JSONObject toJson() {
+        JSONObject plant = new JSONObject();
+        plant.put("health", health);
+        plant.put("damage", damage);
+        plant.put("index", index);
+        return plant;
     }
 
 }

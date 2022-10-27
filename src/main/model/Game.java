@@ -1,20 +1,27 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
+// this is the game class, which hosts all the inner workings. Has 3 separate arrays, 2 which store zombies and plants
+// the other array is for the visual representation of the zombies and plants
 public class Game {
     private String[] playField;
     private ArrayList<Zombie> zombieList;
     private ArrayList<Plant> plantList;
     private boolean gameState;
+    private boolean isLoaded;
 
+    // MODIFIES: this
+    // EFFECTS: creates a new play field and initializes all arraylists and game states
     public Game() {
         playField = new String[]{"_", "_", "_", "_", "_", "_", "_", "_", "_", "_"};
         zombieList = new ArrayList<>();
         plantList = new ArrayList<>();
         gameState = true;
-        placeZombie(7);
-        placeZombie(9);
+        isLoaded = false;
     }
 
     // REQUIRES: index >= 0, index < playField.size()
@@ -186,4 +193,73 @@ public class Game {
         return plantList;
     }
 
+    // EFFECTS: // converts plants into json object array
+    private JSONArray plantsToJson() {
+        JSONArray plantArray = new JSONArray();
+        for (Plant p : plantList) {
+            plantArray.put(p.toJson());
+        }
+        return plantArray;
+    }
+
+    // EFFECTS: converts zombies into json object array
+    private JSONArray zombiesToJson() {
+        JSONArray zombieArray = new JSONArray();
+        for (Zombie z : zombieList) {
+            zombieArray.put(z.toJson());
+        }
+        return zombieArray;
+    }
+
+    // REQUIRES: json array with key of zombies and plants
+    // EFFECTS: puts both arrays into a single json object
+    public JSONObject arraysToJson(JSONArray zombies, JSONArray plants) {
+        JSONObject json = new JSONObject();
+        json.put("plants", plants);
+        json.put("zombies", zombies);
+        return json;
+    }
+
+    // EFFECTS: returns a json object containing zombie and plant arrays
+    public JSONObject gameJson() {
+        return arraysToJson(zombiesToJson(), plantsToJson());
+    }
+
+    // MODIFIES: this
+    // EFFECTS: sets the plant list to the parameter list
+    public void replacePlantList(ArrayList<Plant> newList) {
+        this.plantList = newList;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: sets the zombie list to the parameter list
+    public void replaceZombieList(ArrayList<Zombie> newList) {
+        this.zombieList = newList;
+    }
+
+    // MODIFIES: this
+   // EFFECTS: turns isLoaded to true;
+    public void loadedGame() {
+        isLoaded = true;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: if the game is not going to have data loaded in from the json, it will summon 2 basic zombies
+    public void summonBaseLevel() {
+        if (!isLoaded) {
+            placeZombie(7);
+            placeZombie(9);
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: "places" the plants and zombies on the play field.
+    public void setLoadedField() {
+        for (Plant p : plantList) {
+            playField[p.getIndex()] = "p";
+        }
+        for (Zombie z : zombieList) {
+            playField[z.getIndex()] = "z";
+        }
+    }
 }

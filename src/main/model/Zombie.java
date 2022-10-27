@@ -1,5 +1,9 @@
 package model;
 
+import org.json.JSONObject;
+
+// this class is for zombies, which move every round and eat the plants placed by the player, if they get to the left
+// side of the play field, you lose
 public class Zombie {
     private int index;
     private int health;
@@ -33,7 +37,19 @@ public class Zombie {
         return (health <= 0);
     }
 
+    // REQUIRES: damage > 0
+    // MODIFIES: this
+    // EFFECTS: returns if the zombie is dead or alive
     public void takeDamage(int damage) {
         health -= damage;
+    }
+
+    // EFFECTS: turns the zombie into a json object
+    public JSONObject toJson() {
+        JSONObject zombie = new JSONObject();
+        zombie.put("health", health);
+        zombie.put("damage", damage);
+        zombie.put("index", index);
+        return zombie;
     }
 }

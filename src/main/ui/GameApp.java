@@ -1,40 +1,64 @@
 package ui;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Scanner;
 
 import model.Game;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
+// contains all the visuals of the game, including main menu and in game menu. responsible for displaying game field
 public class GameApp {
+    private static final String filePath = "./data/gameData.json";
+    private JsonWriter writer;
+    private JsonReader reader;
+    private Game game;
 
-    //EFFECTS: runs game
+    //EFFECTS: runs game, instantiates json reader and writer
     public GameApp() {
-        runGame();
+        writer = new JsonWriter(filePath);
+        reader = new JsonReader(filePath);
+        game = new Game();
+        mainMenu();
     }
 
+    // MODIFIES: Game (game instance)
     // EFFECTS:  if the user enters p, instantiate the game, holds the game loop
     // cont. displays the play field, gets user input from game menu, runs all the game updates
-    public void runGame() {
+    public void mainMenu() {
         mainMenuDisplay();
         String answer = getUserInput();
         if (answer.equals("p")) {
             // run game
-            Game game = new Game();
-            while (game.getGameState()) {
-                printPlayField(game.returnPlayField());
-                gameMenuDisplay();
-                String input = getUserInput();
-                if (processNumericalInput(input, game.returnPlayField())) {
-                    processGameInput(Integer.parseInt(input), game);
-                } else if (input.equals("e")) {
-                    game.stopGame();
-                    System.out.println("Quitting game");
-                } // does the processing of commands and stuff
-                gameUpdate(game);
-            }
-
+            runGame();
         } else if (answer.equals("e")) {
             System.out.println("Quitting game");
+        } else if (answer.equals("l")) {
+            System.out.println("l is received");
+            readGame();
+            runGame();
+        }
+    }
+
+    // MODIFIES:
+    // EFFECTS:
+    public void runGame() {
+        game.summonBaseLevel();
+        while (game.getGameState()) {
+            printPlayField(game.returnPlayField());
+            gameMenuDisplay();
+            String input = getUserInput();
+            if (processNumericalInput(input, game.returnPlayField())) {
+                processGameInput(Integer.parseInt(input), game);
+            } else if (input.equals("e")) {
+                game.stopGame();
+                System.out.println("Quitting game");
+            } else if (input.equals("s")) {
+                saveGame();
+            } // does the processing of commands and stuff
+            gameUpdate(game);
         }
     }
 
@@ -84,6 +108,7 @@ public class GameApp {
         System.out.println("=============================");
         System.out.println("p -> play");
         System.out.println("e -> exit");
+        System.out.println("l -> load save");
         System.out.println("=============================");
     }
 
@@ -91,6 +116,7 @@ public class GameApp {
     public void gameMenuDisplay() {
         System.out.println("=============================");
         System.out.println("what index do you want to plant a flower: ");
+        System.out.println("Enter s to save game: ");
         System.out.println("=============================");
     }
 
@@ -105,6 +131,33 @@ public class GameApp {
         Scanner input = new Scanner(System.in);
         System.out.println("Enter Input: ");
         return input.nextLine();
+    }
+
+    // MODIFIES: this
+    // EFFECTS: writes game data to json file
+    public void saveGame() {
+        try {
+            writer.open();
+            writer.writeToJson(game);
+            writer.close();
+            System.out.println("saved game");
+            game.stopGame();
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file at " + filePath);
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: reads json file of game data into game instance
+    public void readGame() {
+        try {
+            reader.readJson(game);
+            game.loadedGame();
+            game.setLoadedField();
+            System.out.println("loaded game");
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + filePath);
+        }
     }
 }
 
