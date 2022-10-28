@@ -2,9 +2,16 @@ package model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import persistence.JsonReader;
+import persistence.JsonWriter;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameTest {
+    private static final String filePath = "./data/gameData.json";
     Game game = new Game();
 
     @BeforeEach
@@ -106,4 +113,39 @@ class GameTest {
         game.gameOver();
         assertFalse(game.getGameState());
     }
+
+    @Test
+    void readFileTest() {
+        JsonReader reader = new JsonReader(filePath);
+        try {
+            reader.readJson(game);
+            game.loadedGame();
+            game.setLoadedField();
+            System.out.println("loaded game");
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + filePath);
+        }
+
+        assertEquals(game.getZombieList().size(), 1);
+        assertEquals(game.getPlantList().size(), 3);
+
+        Game game2 = new Game();
+        game2.summonBaseLevel();
+        JsonWriter writer = new JsonWriter(filePath);
+
+        try {
+            writer.open();
+            writer.writeToJson(game);
+            writer.close();
+            System.out.println("saved game");
+            game.stopGame();
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file at " + filePath);
+        }
+
+        assertEquals(game2.getZombieList().size(), 2);
+        assertEquals(game2.getPlantList().size(), 0);
+    }
+
 }
+

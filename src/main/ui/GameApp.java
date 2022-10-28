@@ -36,7 +36,6 @@ public class GameApp {
         } else if (answer.equals("e")) {
             System.out.println("Quitting game");
         } else if (answer.equals("l")) {
-            System.out.println("l is received");
             readGame();
             runGame();
         }
@@ -159,6 +158,7 @@ public class GameApp {
             System.out.println("Unable to read from file: " + filePath);
         }
     }
+
 }
 
 
