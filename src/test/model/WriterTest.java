@@ -50,6 +50,7 @@ class WriterTest {
     void writeGameTest() {
         // update this with every change in gameData.json
         game.summonBaseLevel();
+        game.placePlant(0);
         try {
             writer = new JsonWriter(filePath);
             writer.open();
@@ -58,7 +59,7 @@ class WriterTest {
 
             reader = new JsonReader(filePath);
             assertEquals(game.getZombieList().size(), 2);
-            assertEquals(game.getPlantList().size(), 0);
+            assertEquals(game.getPlantList().size(), 1);
         } catch (IOException e) {
             fail("file doesn't exist");
         }

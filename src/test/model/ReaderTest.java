@@ -3,6 +3,7 @@ package model;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import persistence.JsonReader;
+import persistence.JsonWriter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -38,8 +39,9 @@ class ReaderTest {
     }
 
     @Test
-    void readGameTest() {
+    void gameTest() {
         // update this with every change in gameData.json
+        reader = new JsonReader(filePath);
         try {
             reader.readJson(game);
             assertEquals(game.getZombieList().size(), 2);
@@ -50,29 +52,64 @@ class ReaderTest {
     }
 
     @Test
-    void getPlantAndZombieJsonTest() {
+    void readPlantJsonTest() {
         ArrayList<Plant> plantsList = new ArrayList<>();
-        ArrayList<Zombie> zombiesList = new ArrayList<>();
+        String source = "./data/readPlantTest.json";
+        reader = new JsonReader(source);
         try {
-            String data = reader.readFile(filePath);
+            String data = reader.readFile(source);
             JSONObject dataJson = new JSONObject(data);
             plantsList.add(new Plant(10, 100, 0));
             assertEquals(reader.getPlantJsonList(dataJson).size(), plantsList.size());
             assertEquals(reader.getPlantJsonList(dataJson).get(0).getIndex(), plantsList.get(0).getIndex());
 
-            plantsList.clear();
-            String data2 = reader.readFile("./data/emptyGame.json");
-            JSONObject dataJson2 = new JSONObject(data2);
-            assertEquals(reader.getPlantJsonList(dataJson2).size(), plantsList.size());
+            game.placePlant(0);
+            game.placePlant(3);
+
+            JsonWriter writer = new JsonWriter(source);
+
+            writer.open();
+            writer.writeToJson(game);
+            writer.close();
+
+            String data3 = reader.readFile(source);
+            JSONObject dataJson3 = new JSONObject(data3);
+            plantsList.add(new Plant(10, 100, 3));
+            assertEquals(reader.getPlantJsonList(dataJson3).size(), plantsList.size());
+            assertEquals(reader.getPlantJsonList(dataJson3).get(1).getIndex(), plantsList.get(1).getIndex());
+
+            Game onePlantGame = new Game();
+            onePlantGame.placePlant(0);
+            writer.open();
+            writer.writeToJson(onePlantGame);
+            writer.close();
+
         } catch (IOException e) {
             fail("can't read");
         }
+    }
 
+    @Test
+    void readEmptyPlantJsonTest() {
+        try {
+            String data2 = reader.readFile("./data/emptyGame.json");
+            JSONObject dataJson2 = new JSONObject(data2);
+            assertEquals(reader.getPlantJsonList(dataJson2).size(), 0);
+        } catch (IOException e) {
+            // pass
+        }
+
+
+    }
+
+    @Test
+    void readZombieJsonTest() {
+        ArrayList<Zombie> zombiesList = new ArrayList<>();
         try {
             String data = reader.readFile(filePath);
             JSONObject dataJson = new JSONObject(data);
-            zombiesList.add(new Zombie(20, 490, 6));
-            zombiesList.add(new Zombie(20, 500, 8));
+            zombiesList.add(new Zombie(20, 490, 7));
+            zombiesList.add(new Zombie(20, 500, 9));
             assertEquals(reader.getZombieJsonList(dataJson).size(), zombiesList.size());
             assertEquals(reader.getZombieJsonList(dataJson).get(0).getIndex(), zombiesList.get(0).getIndex());
 

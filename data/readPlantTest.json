@@ -1,0 +1,8 @@
+{
+    "plants": [{
+        "damage": 10,
+        "health": 100,
+        "index": 0
+    }],
+    "zombies": []
+}
