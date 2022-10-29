@@ -38,6 +38,13 @@ class readTest {
 
     @Test
     void readGameTest() {
-
+        // update this with every change in gameData.json
+        try {
+            reader.readJson(game);
+            assertEquals(game.getZombieList().size(), 2);
+            assertEquals(game.getPlantList().size(), 1);
+        } catch (IOException e) {
+            fail("file doesn't exist");
+        }
     }
 }
