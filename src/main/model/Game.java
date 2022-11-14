@@ -28,7 +28,7 @@ public class Game {
     // MODIFIES: this
     // EFFECTS: places zombie in play field and in zombieList
     public void placeZombie(int index) {
-        Zombie zombie = new Zombie(500, 20, index);
+        Zombie zombie = new Zombie(50, 20, index);
         playField[index] = "z";
         zombieList.add(zombie);
     }
