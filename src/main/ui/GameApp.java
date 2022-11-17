@@ -46,7 +46,7 @@ public class GameApp {
     public void runGame() {
         game.summonBaseLevel();
         while (game.getGameState()) {
-            printPlayField(game.returnPlayField());
+            printPlayField();
             gameMenuDisplay();
             String input = getUserInput();
             if (processNumericalInput(input, game.returnPlayField())) {
@@ -63,8 +63,8 @@ public class GameApp {
 
     // REQUIRES: non-empty string array
     // EFFECTS: prints play field array
-    public void printPlayField(String[] playField) {
-        System.out.println(Arrays.toString(playField));
+    public void printPlayField() {
+        System.out.println(Arrays.toString(game.returnPlayField()));
     }
 
     // REQUIRES: instantiated game
@@ -76,7 +76,7 @@ public class GameApp {
         if (game.getGameState()) {
             game.damagePlant();
         } else {
-            printPlayField(game.returnPlayField());
+            printPlayField();
             System.out.println("Game over");
         }
     }
