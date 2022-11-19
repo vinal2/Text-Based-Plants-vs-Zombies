@@ -147,5 +147,18 @@ class GameTest {
         assertEquals(game2.getPlantList().size(), 0);
     }
 
+    @Test
+    void zombieTest(){
+        Game zombieGame = new Game();
+        JsonReader reader = new JsonReader("./data/zombieTest.json");
+        try {
+            reader.readJson(zombieGame);
+            assertTrue(zombieGame.getZombieList().get(0).isAlive());
+            assertTrue(zombieGame.getZombieList().get(1).isAlive());
+            assertFalse(zombieGame.getZombieList().get(2).isAlive());
+        } catch (IOException e) {
+            fail("unexpected error");
+        }
+    }
 }
 
