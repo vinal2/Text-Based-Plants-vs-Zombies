@@ -5,14 +5,19 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+// creates the game gui, displays the playField from Game class, has ability to place plants, go to the next turn
+// and can save the game as well.
 public class GameGui implements ActionListener {
-    private int integer = 0;
     private GameToGui game;
     private JLabel playField;
     private JLabel gameOverMessage;
     private JPanel panel;
     private boolean gameState;
 
+    // REQUIRES: instantiated GameToGui class
+    // MODIFIES: this
+    // EFFECTS: initializes the gameGui with an instantiated GameToGui class (which runs the game)
+    //          places everything onto the frame and displays it
     public GameGui(GameToGui gameApp) {
         JFrame frame = new JFrame();
         panel = new JPanel();
@@ -28,12 +33,10 @@ public class GameGui implements ActionListener {
         panel.add(playField);
         panel.add(gameOverMessage);
 
-        // set up the frame and display it
         frame.add(panel, BorderLayout.CENTER);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("GUI");
 
-        //frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
@@ -43,6 +46,8 @@ public class GameGui implements ActionListener {
         //
     }
 
+    // MODIFIES: this
+    // EFFECTS: places all the labels and text onto the screen, including the buttons
     private void layout() {
         playField = new JLabel();
         playField.setBounds(120,450, 840, 100);
@@ -73,26 +78,30 @@ public class GameGui implements ActionListener {
         panel.add(label);
     }
 
+    // MODIFIES: this
+    // EFFECTS: places the next turn button, which calls onto the GameToGui instance
     private void nextTurnButton() {
         JButton button2 = new JButton("Next Turn");
-        ActionListener listener = e -> {
-            updateGameGui();
-        };
+        ActionListener listener = e -> updateGameGui();
         button2.addActionListener(listener);
         button2.setBounds(280, 275, 160, 50);
         panel.add(button2);
     }
 
+    // MODIFIES: this
+    // EFFECTS: places button that saves the game when pressed
     private void saveButton() {
         JButton button2 = new JButton("Save Game");
-        ActionListener listener = e -> {
-            game.saveGame();
-        };
+        ActionListener listener = e -> game.saveGame();
         button2.addActionListener(listener);
         button2.setBounds(640, 275, 160, 50);
         panel.add(button2);
     }
 
+    // REQUIRES: instantiated text field and label
+    // MODIFIES: this
+    // EFFECTS: places a button that when pressed, takes the input from text field and depending on what the input is,
+    //          will change the text of the label saying whether the input was taken.
     private void inputButton(JTextField textField, JLabel label) {
         JButton button2 = new JButton("Place Flower");
         ActionListener listener = e -> {
@@ -116,6 +125,8 @@ public class GameGui implements ActionListener {
         panel.add(button2);
     }
 
+    // REQUIRES: instantiated JLabel
+    // EFFECTS: fills a label with its text (I found this online I don't have the link however)
     private void fillLabelWithText(JLabel label) {
         Font labelFont = label.getFont();
         String labelText = label.getText();
@@ -128,6 +139,9 @@ public class GameGui implements ActionListener {
         label.setFont(new Font(labelFont.getName(), Font.PLAIN, fontSizeToUse - 2));
     }
 
+    // MODIFIES: this
+    // EFFECTS: runs the game updates -> updating the playField every turn and checks for the game over
+    //          will display game over whether the user wins or not
     private void updateGameGui() {
         if (gameState && game.gameUpdate()) {
             playField.setText(game.returnGamePlayField());

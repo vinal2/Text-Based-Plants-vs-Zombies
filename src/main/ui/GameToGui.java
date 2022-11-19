@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
 
+// similar to GameApp class, but without any of the console methods, includes getters to return Game data
 public class GameToGui {
     private static final String filePath = "./data/gameData.json";
     private JsonWriter writer;
@@ -105,6 +106,8 @@ public class GameToGui {
         return Arrays.toString(game.returnPlayField());
     }
 
+    // MODIFIES: this
+    // EFFECTS: if the game isn't loaded, it will start with the base level of 2 zombies
     public void loadBaseLevel() {
         if (!gameLoaded) {
             game.summonBaseLevel();

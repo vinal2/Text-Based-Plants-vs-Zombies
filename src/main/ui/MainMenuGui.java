@@ -1,27 +1,20 @@
 package ui;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
 
+// main menu class for the gui. Creates a jFrame/panel for the main menu and has a background added to it
+// has buttons for loading, exiting the game and to play without loading, which will load the base level into the game
 public class MainMenuGui {
     JLabel mainLabel;
     JPanel panel;
     GameToGui gameInstance;
 
+    // MODIFIES: this
+    // EFFECTS: initializes the gui, adds the buttons and puts everything on the frame to display
     public MainMenuGui() {
         JFrame frame = new JFrame();
-        /*try {
-            JLabel backgroundLabel = new JLabel(new ImageIcon(ImageIO.read(new File("resources/background.png"))));
-            frame.setContentPane(backgroundLabel);
-        } catch (IOException e) {
-            System.out.println("unable to find background");
-        }*/
-
-        //panel = new JPanel();
         panel = new PanelBackground();
         panel.setBorder(BorderFactory.createEmptyBorder(9, 9, 9, 9));
         panel.setLayout(null);
@@ -48,6 +41,8 @@ public class MainMenuGui {
         frame.setVisible(true);
     }
 
+    // REQUIRES: instantiated JLabel
+    // EFFECTS: fills a label with its text (I found this online I don't have the link however)
     private void fillLabelWithText(JLabel label) {
         Font labelFont = label.getFont();
         String labelText = label.getText();
@@ -60,6 +55,8 @@ public class MainMenuGui {
         label.setFont(new Font(labelFont.getName(), Font.PLAIN, fontSizeToUse));
     }
 
+    // MODIFIES: this
+    // EFFECTS: adds all 3 buttons, with play, load and exit buttons with their own functions
     private void buttons() {
         JButton play = new JButton("Play");
         ActionListener playListener = e -> new GameGui(new GameToGui());
