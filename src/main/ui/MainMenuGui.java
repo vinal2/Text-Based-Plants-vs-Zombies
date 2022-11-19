@@ -1,54 +1,51 @@
 package ui;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 
 public class MainMenuGui {
     JLabel mainLabel;
+    JPanel panel;
+    GameToGui gameInstance;
 
     public MainMenuGui() {
         JFrame frame = new JFrame();
-        JPanel panel = new JPanel();
-        mainLabel = new JLabel("el trole");
+        /*try {
+            JLabel backgroundLabel = new JLabel(new ImageIcon(ImageIO.read(new File("resources/background.png"))));
+            frame.setContentPane(backgroundLabel);
+        } catch (IOException e) {
+            System.out.println("unable to find background");
+        }*/
+
+        //panel = new JPanel();
+        panel = new PanelBackground();
+        panel.setBorder(BorderFactory.createEmptyBorder(9, 9, 9, 9));
+        panel.setLayout(null);
+        gameInstance = new GameToGui();
+
+        mainLabel = new JLabel("bottom text");
         mainLabel.setBounds(340, 500, 400, 100);
         fillLabelWithText(mainLabel);
         panel.add(mainLabel);
-        panel.setBorder(BorderFactory.createEmptyBorder(9, 9, 9, 9));
-        panel.setLayout(null);
 
-        JLabel title = new JLabel("pant vus cog-3");
+        JLabel title = new JLabel("put title image here");
         title.setBounds(340, 30, 400, 100);
         fillLabelWithText(title);
         panel.add(title);
 
-        JButton button2 = new JButton("el troll");
-        ActionListener listener = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new GuiTest();
-            }
-        };
-        button2.setBounds(460, 200, 160, 50);
-        button2.addActionListener(listener);
-        panel.add(button2);
-
-        loadButton(panel);
-        exitButton(panel);
+        buttons();
 
         frame.setSize(1080, 720);
         frame.add(panel, BorderLayout.CENTER);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("GUI");
 
-        //frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-    }
-
-    public static void main(String[] args) {
-        new MainMenuGui();
     }
 
     private void fillLabelWithText(JLabel label) {
@@ -63,33 +60,27 @@ public class MainMenuGui {
         label.setFont(new Font(labelFont.getName(), Font.PLAIN, fontSizeToUse));
     }
 
-    private void loadButton(JPanel panel) {
-        JButton button2 = new JButton("Load Game");
-        ActionListener listener = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //new GuiTest();
-                mainLabel.setText("meow1"); // load all the game components into a new game Gui
+    private void buttons() {
+        JButton play = new JButton("Play");
+        ActionListener playListener = e -> new GameGui(new GameToGui());
+        play.setBounds(460, 200, 160, 50);
+        play.addActionListener(playListener);
+        panel.add(play);
 
-            }
+        JButton load = new JButton("Load Game");
+        ActionListener loadListener = e -> {
+            mainLabel.setText("meow1"); // load all the game components into a new game Gui
+            gameInstance.readGame();
+            new GameGui(gameInstance);
         };
-        button2.addActionListener(listener);
-        button2.setBounds(460, 275, 160, 50);
-        panel.add(button2);
-    }
+        load.addActionListener(loadListener);
+        load.setBounds(460, 275, 160, 50);
+        panel.add(load);
 
-    private void exitButton(JPanel panel) {
-        JButton button2 = new JButton("Exit Game");
-        ActionListener listener = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //new GuiTest();
-                System.exit(0);
-            }
-        };
-        button2.addActionListener(listener);
-        button2.setBounds(460, 350, 160, 50);
-        panel.add(button2);
+        JButton exit = new JButton("Exit Game");
+        ActionListener exitListener = e -> System.exit(0);
+        exit.addActionListener(exitListener);
+        exit.setBounds(460, 350, 160, 50);
+        panel.add(exit);
     }
-
 }
