@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 // has buttons for loading, exiting the game and to play without loading, which will load the base level into the game
 public class MainMenuGui {
     JLabel mainLabel;
-    JPanel panel;
+    PanelBackground panel;
     GameToGui gameInstance;
 
     // MODIFIES: this

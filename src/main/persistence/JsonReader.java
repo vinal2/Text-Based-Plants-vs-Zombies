@@ -15,7 +15,7 @@ import java.util.stream.Stream;
 
 // reads game data from json into game instance
 public class JsonReader {
-    private String file;
+    private final String file;
 
     // REQUIRES: non-empty string -> should be a path to a file
     // MODIFIES: this

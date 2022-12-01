@@ -12,9 +12,9 @@ import persistence.JsonWriter;
 // contains all the visuals of the game, including main menu and in game menu. responsible for displaying game field
 public class GameApp {
     private static final String filePath = "./data/gameData.json";
-    private JsonWriter writer;
-    private JsonReader reader;
-    private Game game;
+    private final JsonWriter writer;
+    private final JsonReader reader;
+    private final Game game;
 
     //EFFECTS: runs game, instantiates json reader and writer
     public GameApp() {

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 // this is the game class, which hosts all the inner workings. Has 3 separate arrays, 2 which store zombies and plants
 // the other array is for the visual representation of the zombies and plants
 public class Game {
-    private String[] playField;
+    private final String[] playField;
     private ArrayList<Zombie> zombieList;
     private ArrayList<Plant> plantList;
     private boolean gameState;
@@ -31,6 +31,7 @@ public class Game {
         Zombie zombie = new Zombie(50, 20, index);
         playField[index] = "z";
         zombieList.add(zombie);
+        EventLog.getInstance().logEvent(new Event("zombie added at index: " + index));
     }
 
     // REQUIRES: index >= 0, index < playField.size()
@@ -40,6 +41,7 @@ public class Game {
         Plant plant = new Plant(100, 10, index);
         playField[index] = "p";
         plantList.add(plant);
+        EventLog.getInstance().logEvent(new Event("plant added at index: " + index));
     }
 
     // EFFECTS: returns play field array
@@ -167,6 +169,9 @@ public class Game {
 
     // EFFECTS: if the closest zombie is at the beginning of the play field list, the game is over
     public void gameOver() {
+        if (zombieList.size() == 0) {
+            stopGame();
+        }
         if (closestZombie() == 0) {
             stopGame();
         }
@@ -260,6 +265,12 @@ public class Game {
         }
         for (Zombie z : zombieList) {
             playField[z.getIndex()] = "z";
+        }
+    }
+
+    public void printLogs() {
+        for (Event e : EventLog.getInstance()) {
+            System.out.println(e);
         }
     }
 }

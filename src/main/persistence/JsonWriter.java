@@ -9,7 +9,7 @@ import java.io.PrintWriter;
 
 // writes game data to json
 public class JsonWriter {
-    private String file;
+    private final String file;
     private PrintWriter writer;
 
     // REQUIRES: non-empty file path string

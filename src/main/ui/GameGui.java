@@ -8,10 +8,10 @@ import java.awt.event.*;
 // creates the game gui, displays the playField from Game class, has ability to place plants, go to the next turn
 // and can save the game as well.
 public class GameGui implements ActionListener {
-    private GameToGui game;
+    private final GameToGui game;
     private JLabel playField;
     private JLabel gameOverMessage;
-    private JPanel panel;
+    private final JPanel panel;
     private boolean gameState;
 
     // REQUIRES: instantiated GameToGui class
@@ -106,7 +106,6 @@ public class GameGui implements ActionListener {
         JButton button2 = new JButton("Place Flower");
         ActionListener listener = e -> {
             String input = textField.getText();
-            System.out.println(input);
             if (gameState) {
                 if (game.processNumericalInput(input)) {
                     label.setBounds(495, 200, 200, 30);

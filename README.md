@@ -24,3 +24,31 @@
 - You can save the state of my application by pressing the save button after launching the game instance
     (play/load button in the main menu)
 - You can reload the state of my application by pressing the load button in the main menu
+
+# Phase 4: Task 2
+- in the case of a win:
+- Wed Nov 30 22:33:46 PST 2022
+  zombie added at index: 7
+  Wed Nov 30 22:33:46 PST 2022
+  zombie added at index: 9
+  Wed Nov 30 22:33:49 PST 2022
+  plant added at index: 0
+  Wed Nov 30 22:33:50 PST 2022
+  Game won
+- in the case of a loss:
+- Wed Nov 30 22:34:19 PST 2022
+  zombie added at index: 7
+  Wed Nov 30 22:34:19 PST 2022
+  zombie added at index: 9
+  Wed Nov 30 22:34:20 PST 2022
+  Game lost
+# Phase 4: Task 3
+- In the lower levels of the UML diagram, you can observe the GameApp and Game as well as the GameToGui-Game association.
+- The classes GameToGui and GameApp handle the game loop for each respective "mode" being console and gui
+- I feel like I could've refactored it to have game looping mechanics inside of Game to remove GameApp (for Phase 1)
+- However, having it separated into console and GUI versions of handling all the not so game related methods,
+- is a benefit for organization.
+- Looking at my project, I don't really have regrets on my design of my program, as all the different classes
+- have their reason to be separate classes.
+- Zombie/Plants on the other hand, could totally be abstract as most of the methods and fields are the same.
+- note: sorry that the image is flipped, I'm not sure how my portrait picture got flipped into landscape in intelliJ

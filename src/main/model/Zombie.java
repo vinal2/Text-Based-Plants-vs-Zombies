@@ -5,9 +5,9 @@ import org.json.JSONObject;
 // this class is for zombies, which move every round and eat the plants placed by the player, if they get to the left
 // side of the play field, you lose
 public class Zombie {
-    private int index;
+    private final int index;
     private int health;
-    private int damage;
+    private final int damage;
 
     public Zombie(int hp, int dmg, int place) {
         health = hp;

@@ -5,8 +5,8 @@ import org.json.JSONObject;
 // this class is for plants, which are static in the play field and do damage over time to zombies. Placed by the player
 public class Plant {
     private int health;
-    private int damage;
-    private int index;
+    private final int damage;
+    private final int index;
 
     public Plant(int hp, int dmg, int place) {
         health = hp;

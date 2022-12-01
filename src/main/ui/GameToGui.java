@@ -1,5 +1,7 @@
 package ui;
 
+import model.Event;
+import model.EventLog;
 import model.Game;
 import persistence.JsonReader;
 import persistence.JsonWriter;
@@ -11,9 +13,9 @@ import java.util.Arrays;
 // similar to GameApp class, but without any of the console methods, includes getters to return Game data
 public class GameToGui {
     private static final String filePath = "./data/gameData.json";
-    private JsonWriter writer;
-    private JsonReader reader;
-    private Game game;
+    private final JsonWriter writer;
+    private final JsonReader reader;
+    private final Game game;
     private boolean gameLoaded;
 
     //EFFECTS: runs game, instantiates json reader and writer
@@ -24,17 +26,14 @@ public class GameToGui {
         gameLoaded = false;
     }
 
-    // REQUIRES: non-empty string array
-    // EFFECTS: prints play field array
-    public void printPlayField() {
-        System.out.println(Arrays.toString(game.returnPlayField()));
-    }
-
     // REQUIRES: instantiated game
     // EFFECTS: runs an update of the game, moving zombies, checking game state etc.
     public boolean gameUpdate() {
         game.damageZombie(game.calculateDamage());
         if (game.getZombieList().size() == 0) {
+            EventLog.getInstance().logEvent(new Event("Game won"));
+            game.printLogs();
+            EventLog.getInstance().clear();
             return false;
         }
         game.moveZombies();
@@ -42,8 +41,9 @@ public class GameToGui {
         if (game.getGameState()) {
             game.damagePlant();
         } else {
-            printPlayField();
-            System.out.println("Game over");
+            EventLog.getInstance().logEvent(new Event("Game lost"));
+            game.printLogs();
+            EventLog.getInstance().clear();
             return false;
         }
         return true;
@@ -56,10 +56,7 @@ public class GameToGui {
         int length = game.returnPlayField().length;
         try {
             numericalValue = Integer.parseInt(input);
-            if (numericalValue >= length) {
-                return false;
-            }
-            return true;
+            return numericalValue < length;
         } catch (NumberFormatException exception) {
             if (!input.equals("")) {
                 return false;
