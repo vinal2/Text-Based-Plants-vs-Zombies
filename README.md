@@ -51,4 +51,6 @@
 - Looking at my project, I don't really have regrets on my design of my program, as all the different classes
 - have their reason to be separate classes.
 - Zombie/Plants on the other hand, could totally be abstract as most of the methods and fields are the same.
+- Also, the relationship between Game and Zombie/Plant is not bounded because you can actually add an infinite amount of either
+- I could limit this to the size of the play field, but I haven't gotten around to implementing that
 - note: sorry that the image is flipped, I'm not sure how my portrait picture got flipped into landscape in intelliJ

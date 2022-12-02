@@ -268,6 +268,7 @@ public class Game {
         }
     }
 
+    // EFFECTS: adds an event to the event log
     public void printLogs() {
         for (Event e : EventLog.getInstance()) {
             System.out.println(e);
