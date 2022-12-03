@@ -167,7 +167,7 @@ public class Game {
         }
     }
 
-    // EFFECTS: if the closest zombie is at the beginning of the play field list, the game is over
+    // EFFECTS: if the closest zombie is at the beginning of the play field list, the game is ove
     public void gameOver() {
         if (zombieList.size() == 0) {
             stopGame();
