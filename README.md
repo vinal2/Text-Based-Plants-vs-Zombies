@@ -14,7 +14,7 @@
 - I want to be able to save the current level of zombies, as well as all other zombies left in the level
 - I want to have the option to not save the level of zombies as I exit the game
 
-# Instructions for Grader
+# Instructions
 
 - You can generate the first required event related to adding Xs to a Y by launching MainGui and pressing the play button
     that loads in the base level, adding 2 zombies into the Game class' playField and displaying it from the GameToGui class
